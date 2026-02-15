@@ -4,3 +4,6 @@
 [submodule "EverythingMCP"]
 	path = EverythingMCP
 	url = https://github.com/sramayanam/EverythingMCP.git
+[submodule "aifoundrylandingzone"]
+	path = aifoundrylandingzone
+	url = https://github.com/sramayanam/aifoundrylandingzone.git
