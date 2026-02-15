@@ -1,0 +1,3 @@
+[submodule "claudeartifacts"]
+	path = claudeartifacts
+	url = https://github.com/sramayanam/claudeartifacts.git
