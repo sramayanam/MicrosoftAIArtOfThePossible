@@ -1,0 +1,367 @@
+﻿{
+  "properties": {
+    "connectionReferences": {
+      "shared_azureblob-1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "name": "shared-azureblob-6c7ce124-4b58-4363-91ce-f61ea30e9530",
+          "connectionReferenceLogicalName": "new_sharedazureblob_e392d"
+        },
+        "api": {
+          "name": "shared_azureblob"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "flowSystemMetadata": {
+              "flowKind": "Stateful"
+            }
+          },
+          "type": "Request",
+          "kind": "Skills",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "description": "",
+                  "title": "input",
+                  "type": "string",
+                  "x-ms-content-hint": "TEXT",
+                  "x-ms-dynamically-added": true
+                }
+              },
+              "required": [
+                "text"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Respond_to_the_agent": {
+          "runAfter": {
+            "Apply_to_each": [
+              "Succeeded"
+            ]
+          },
+          "type": "Response",
+          "kind": "Skills",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "imageurl": {
+                  "title": "imageurl",
+                  "description": "String representation of comma seperated array of valid chart urls with sas tokens to calling agent ",
+                  "type": "string",
+                  "x-ms-content-hint": "TEXT",
+                  "x-ms-dynamically-added": true
+                }
+              },
+              "additionalProperties": {}
+            },
+            "statusCode": 200,
+            "body": {
+              "imageurl": "@{variables(\u0027Array Of Images\u0027)}"
+            }
+          }
+        },
+        "Parse_JSON": {
+          "runAfter": {},
+          "type": "ParseJson",
+          "inputs": {
+            "content": "@triggerBody()?[\u0027text\u0027]",
+            "schema": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "object",
+                "properties": {
+                  "chart": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string"
+                      },
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "labels": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "datasets": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "label": {
+                                  "type": "string"
+                                },
+                                "data": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "number"
+                                  }
+                                },
+                                "backgroundColor": {
+                                  "type": "string"
+                                },
+                                "borderColor": {
+                                  "type": "string"
+                                },
+                                "fill": {
+                                  "type": "boolean"
+                                },
+                                "yAxisID": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "options": {
+                        "type": "object",
+                        "properties": {
+                          "scales": {
+                            "type": "object",
+                            "properties": {
+                              "yAxes": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "type": "string"
+                                    },
+                                    "type": {
+                                      "type": "string"
+                                    },
+                                    "position": {
+                                      "type": "string"
+                                    },
+                                    "scaleLabel": {
+                                      "type": "object",
+                                      "properties": {
+                                        "display": {
+                                          "type": "boolean"
+                                        },
+                                        "labelString": {
+                                          "type": "string"
+                                        }
+                                      }
+                                    },
+                                    "gridLines": {
+                                      "type": "object",
+                                      "properties": {
+                                        "drawOnChartArea": {
+                                          "type": "boolean"
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "Apply_to_each": {
+          "foreach": "@body(\u0027Parse_JSON\u0027)",
+          "actions": {
+            "HTTP": {
+              "type": "Http",
+              "inputs": {
+                "uri": "https://quickchart.io/chart",
+                "method": "POST",
+                "headers": {
+                  "Content-Type": "application/json"
+                },
+                "body": "@items(\u0027Apply_to_each\u0027)"
+              },
+              "runtimeConfiguration": {
+                "contentTransfer": {
+                  "transferMode": "Chunked"
+                }
+              }
+            },
+            "Compose": {
+              "runAfter": {
+                "Set_variable": [
+                  "Succeeded"
+                ]
+              },
+              "type": "Compose",
+              "inputs": "@base64ToBinary(variables(\u0027image\u0027))"
+            },
+            "Create_blob_(V2)": {
+              "runAfter": {
+                "Compose": [
+                  "Succeeded"
+                ]
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "parameters": {
+                  "dataset": "dallasmtcstorage",
+                  "folderPath": "/charts",
+                  "name": "chart-@{utcNow(\u0027yyyyMMdd-HHmmss\u0027)}.png",
+                  "body": "@outputs(\u0027Compose\u0027)"
+                },
+                "host": {
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_azureblob",
+                  "operationId": "CreateFile_V2",
+                  "connectionName": "shared_azureblob-1"
+                }
+              },
+              "runtimeConfiguration": {
+                "contentTransfer": {
+                  "transferMode": "Chunked"
+                }
+              }
+            },
+            "Create_SAS_URI_by_path_(V2)": {
+              "runAfter": {
+                "Create_blob_(V2)": [
+                  "Succeeded"
+                ]
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "parameters": {
+                  "storageAccountName": "dallasmtcstorage",
+                  "path": "@outputs(\u0027Create_blob_(V2)\u0027)?[\u0027body/Path\u0027]",
+                  "policy/Permissions": "Read",
+                  "policy/ExpiryTime": "@addMinutes(utcNow(), 30)"
+                },
+                "host": {
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_azureblob",
+                  "operationId": "CreateShareLinkByPath_V2",
+                  "connectionName": "shared_azureblob-1"
+                }
+              }
+            },
+            "Append_to_string_variable": {
+              "runAfter": {
+                "Append_to_array_variable": [
+                  "Succeeded"
+                ]
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "create_SAS_URI_by_path_final",
+                "value": "@outputs(\u0027Create_SAS_URI_by_path_(V2)\u0027)?[\u0027body/WebUrl\u0027]"
+              }
+            },
+            "Set_variable": {
+              "runAfter": {
+                "HTTP": [
+                  "Succeeded"
+                ]
+              },
+              "type": "SetVariable",
+              "inputs": {
+                "name": "image",
+                "value": "@body(\u0027HTTP\u0027)?[\u0027$content\u0027]"
+              }
+            },
+            "Append_to_array_variable": {
+              "runAfter": {
+                "Create_SAS_URI_by_path_(V2)": [
+                  "Succeeded"
+                ]
+              },
+              "type": "AppendToArrayVariable",
+              "inputs": {
+                "name": "Array Of Images",
+                "value": "@outputs(\u0027Create_SAS_URI_by_path_(V2)\u0027)?[\u0027body/WebUrl\u0027]"
+              }
+            }
+          },
+          "runAfter": {
+            "Initialize_variable": [
+              "Succeeded"
+            ]
+          },
+          "type": "Foreach"
+        },
+        "Initialize_sas_uril_contents": {
+          "runAfter": {
+            "Parse_JSON": [
+              "Succeeded"
+            ]
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "create_SAS_URI_by_path_final",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "Initialize_image_variable": {
+          "runAfter": {
+            "Initialize_sas_uril_contents": [
+              "Succeeded"
+            ]
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "image",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "Initialize_variable": {
+          "runAfter": {
+            "Initialize_image_variable": [
+              "Succeeded"
+            ]
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Array Of Images",
+                "type": "array"
+              }
+            ]
+          }
+        }
+      },
+      "outputs": {}
+    }
+  },
+  "schemaVersion": "1.0.0.0"
+}

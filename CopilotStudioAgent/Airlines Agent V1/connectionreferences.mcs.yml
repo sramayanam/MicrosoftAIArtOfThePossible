@@ -1,0 +1,9 @@
+﻿connectionReferences:
+  - connectionReferenceLogicalName: crb45_agent_3wXQBa.shared_fabricdataagent.0a2d3c76f323479ab74241beb7afd432
+    connectorId: /providers/Microsoft.PowerApps/apis/shared_fabricdataagent
+  - connectionReferenceLogicalName: crb45_agent_3wXQBa.shared_fabricdataagent.0a2d3c76f323479ab74241beb7afd432
+    connectorId: /providers/Microsoft.PowerApps/apis/shared_fabricdataagent
+  - connectionReferenceLogicalName: crb45_agent_3wXQBa.shared_mcpdatabaseconnector-5f94ca7a23bc7ef49c-5f2ff67f870fe6361c.ab647947ae2e4d00975f249f59283627
+    connectorId: /providers/Microsoft.PowerApps/apis/shared_mcpdatabaseconnector-5f94ca7a23bc7ef49c-5f2ff67f870fe6361c
+  - connectionReferenceLogicalName: crb45_agent_3wXQBa.shared_mcpdatabaseconnector-5f94ca7a23bc7ef49c-5f2ff67f870fe6361c.ab647947ae2e4d00975f249f59283627
+    connectorId: /providers/Microsoft.PowerApps/apis/shared_mcpdatabaseconnector-5f94ca7a23bc7ef49c-5f2ff67f870fe6361c

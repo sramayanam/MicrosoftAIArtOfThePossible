@@ -1,0 +1,48 @@
+# Name: Display charts and metrics on airline data
+kind: AdaptiveDialog
+beginDialog:
+  kind: OnRecognizedIntent
+  id: main
+  intent:
+    triggerQueries:
+      - show airline charts
+      - display airline metrics
+      - visualize airline data
+      - airline performance graphs
+      - view airline statistics
+      - present airline analytics
+      - airline data dashboard
+      - see flight metrics chart
+      - graph of airline trends
+
+  actions:
+    - kind: InvokeConnectorAction
+      id: invokeConnectorAction_MxsFqu
+      output:
+        kind: SingleVariableOutputBinding
+        variable: Topic.InvokeMCP
+
+      connectionReference: crb45_agent_3wXQBa.shared_mcpdatabaseconnector-5f94ca7a23bc7ef49c-5f2ff67f870fe6361c.ab647947ae2e4d00975f249f59283627
+      connectionProperties:
+        mode: Invoker
+
+      operationId: InvokeMCP
+
+    - kind: InvokeFlowAction
+      id: invokeFlowAction_Wg5uNL
+      input:
+        binding:
+          text: =Topic.InvokeMCP
+
+      output:
+        binding:
+          imageurl: Topic.imageurl
+
+      flowId: 0381d657-5196-f011-b4cc-6045bdec9ae1
+
+    - kind: SearchAndSummarizeContent
+      id: Rk7GCc
+      userInput: =Concatenate(Topic.InvokeMCP,Topic.imageurl)
+
+inputType: {}
+outputType: {}

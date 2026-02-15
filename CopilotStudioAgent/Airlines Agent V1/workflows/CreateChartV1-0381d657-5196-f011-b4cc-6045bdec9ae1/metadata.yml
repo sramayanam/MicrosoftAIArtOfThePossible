@@ -1,0 +1,30 @@
+﻿jsonFileName: workflows/CreateChartV1-0381d657-5196-f011-b4cc-6045bdec9ae1/workflow.json
+workflowId: 0381d657-5196-f011-b4cc-6045bdec9ae1
+name: Create Chart V1
+type: 1
+description: This flow receives a text input containing chart data, processes it to extract labels and values, and sends this data to an online chart service to generate an appropriate chart image based on chart type. The image is then converted and uploaded to cloud storage. A secure link to the uploaded chart image is created and returned to the requester. The flow ensures each step runs only after the previous one succeeds, following a logical sequence based on completion status rather than order in the list.
+subprocess: false
+category: 5
+mode: 0
+scope: 4
+onDemand: false
+triggerOnCreate: false
+triggerOnDelete: false
+asyncAutodelete: false
+syncWorkflowLogOnFailure: false
+stateCode: 1
+statusCode: 2
+runAs: 1
+isTransacted: true
+introducedVersion: 1.0
+isCustomizable:
+  value: true
+  canBeChanged: true
+  managedPropertyLogicalName: iscustomizableanddeletable
+businessProcessType: 0
+isCustomProcessingStepAllowedForOtherPublishers:
+  value: true
+  canBeChanged: true
+  managedPropertyLogicalName: canbedeleted
+modernFlowType: 1
+primaryEntity: none

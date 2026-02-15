@@ -12,7 +12,7 @@ const SAMPLE_PROMPTS = [
   {
     title: '2015 Airport Performance',
     prompt:
-      'Display the chart that shows 2015 airport performance with hub status and whether they serve major or regional carriers, including revenue, passengers',
+      'Display a chart that List annual airport stats for 2015: destinations served, direct passengers, revenue',
   },
 ];
 

@@ -1,0 +1,31 @@
+﻿displayName: Airlines Agent V1
+schemaName: crb45_agent_3wXQBa
+accessControlPolicy: GroupMembership
+authenticationMode: Integrated
+authenticationTrigger: Always
+configuration:
+  channels:
+    - channelId: MsTeams
+
+  settings:
+    GenerativeActionsEnabled: true
+
+  isAgentConnectable: true
+  gPTSettings:
+    defaultSchemaName: crb45_agent_3wXQBa.gpt.default
+
+  isLightweightBot: false
+  aISettings:
+    useModelKnowledge: true
+    isFileAnalysisEnabled: true
+    isSemanticSearchEnabled: true
+    contentModeration: High
+    optInUseLatestModels: false
+
+  recognizer:
+    kind: GenerativeAIRecognizer
+
+authenticationConfiguration: {}
+publishedOn: 2026-02-11T20:08:06.0000000Z
+template: default-2.1.0
+language: 1033

@@ -1,0 +1,10 @@
+# Name: Create Chart V1
+kind: TaskDialog
+outputs:
+  - propertyName: imageurl
+
+action:
+  kind: InvokeFlowTaskAction
+  flowId: 0381d657-5196-f011-b4cc-6045bdec9ae1
+
+outputMode: All

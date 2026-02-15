@@ -1,0 +1,13 @@
+# Name: MCPDatabaseConnector - Database MCP Server
+kind: TaskDialog
+modelDisplayName: Database MCP Server
+modelDescription: Database MCP Server
+action:
+  kind: InvokeExternalAgentTaskAction
+  connectionReference: crb45_agent_3wXQBa.shared_mcpdatabaseconnector-5f94ca7a23bc7ef49c-5f2ff67f870fe6361c.ab647947ae2e4d00975f249f59283627
+  connectionProperties:
+    mode: Invoker
+
+  operationDetails:
+    kind: ModelContextProtocolMetadata
+    operationId: InvokeMCP

@@ -1,0 +1,21 @@
+# Name: AirportAnalysisDataAgent
+kind: TaskDialog
+inputs:
+  - kind: ManualTaskInput
+    propertyName: artifactId
+    value: b74146a5-74a4-4877-8e88-ef52f430d33f
+
+  - kind: ManualTaskInput
+    propertyName: workspaceId
+    value: b7c66695-d0f4-4d36-af43-7a7759e09a3a
+
+modelDisplayName: AirportAnalysisDataAgent
+action:
+  kind: InvokeExternalAgentTaskAction
+  connectionReference: crb45_agent_3wXQBa.shared_fabricdataagent.0a2d3c76f323479ab74241beb7afd432
+  connectionProperties:
+    mode: Invoker
+
+  operationDetails:
+    kind: ModelContextProtocolMetadata
+    operationId: InvokeMCP
