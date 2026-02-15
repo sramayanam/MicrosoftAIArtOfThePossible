@@ -354,9 +354,9 @@ terraform apply
 ## 📚 Documentation
 
 ### Main Project Documentation
-- **[Power Apps Development](#getting-started)** - Building and deploying the Code App
-- **[Architecture Details](#architecture)** - Technical architecture and design patterns
-- **[Project Structure](#project-structure)** - Code organization and components
+- **[Power Apps Development](#-getting-started)** - Building and deploying the Code App
+- **[Architecture Details](#-architecture)** - Technical architecture and design patterns
+- **[Project Structure](#-project-structure)** - Code organization and components
 
 ### Submodule Documentation
 - **[EverythingMCP README](./EverythingMCP/README.md)** - Complete MCP server documentation
