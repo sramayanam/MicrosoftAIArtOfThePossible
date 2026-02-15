@@ -1,3 +1,6 @@
 [submodule "claudeartifacts"]
 	path = claudeartifacts
 	url = https://github.com/sramayanam/claudeartifacts.git
+[submodule "EverythingMCP"]
+	path = EverythingMCP
+	url = https://github.com/sramayanam/EverythingMCP.git
